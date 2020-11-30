@@ -46,7 +46,6 @@ void ProcessClient(SOCKET hSock)
 //    while (true)
     {
         int nCode = m.Receive(s);
-        //cout << m.m_Header.m_From << ": " << nCode << endl;
         switch (nCode)
         {
         case M_INIT:
