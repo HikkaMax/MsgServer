@@ -17,6 +17,11 @@ namespace SocketSharp
         {
             while (true)
             {
+                if(m_ClientId == 0)
+                {
+                    break;
+                }
+
                 Message message = SendMessage(Convert.ToUInt32(Members.M_BROKER), Convert.ToUInt32(Messages.M_GETDATA));
                 switch (message.m_Header.m_Type)
                 {
@@ -51,6 +56,11 @@ namespace SocketSharp
             if(m.m_Header.m_Type == Convert.ToUInt32(Messages.M_INIT) && m_ClientId == 0)
             {
                 m_ClientId = Convert.ToInt32(m.m_Header.m_To);
+            }
+
+            if (m.m_Header.m_Type == Convert.ToUInt32(Messages.M_EXIT))
+            {
+                m_ClientId = 0;
             }
 
             return m;
@@ -101,9 +111,7 @@ namespace SocketSharp
                         }
                     case 0:
                         {
-                            t.Abort();
                             SendMessage(Convert.ToUInt32(Members.M_BROKER), Convert.ToUInt32(Messages.M_EXIT));
-                            m_ClientId = 0;
                             break;
                         }
                 }

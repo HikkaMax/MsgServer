@@ -4,6 +4,8 @@ from msg import *
 
 def ProcessMessages():
 	while True:
+		if Message.ClientID == 0 :
+			break
 		m = Message.SendMessage(M_BROKER, M_GETDATA)
 		if m.Header.Type == M_DATA:
 			print("Message from: " +  str(m.Header.From))
@@ -40,6 +42,5 @@ while True:
 	elif (actionId == 0):
 		if (Message.ClientID != 0):
 			Message.SendMessage(M_BROKER, M_EXIT)
-		break
 	else:
 		print("Action Unknown")

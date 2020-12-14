@@ -58,5 +58,7 @@ class Message:
 			m.Receive(s)
 			if m.Header.Type == M_INIT:
 				Message.ClientID = m.Header.To
+			if m.Header.Type == M_CONFIRM:
+				Message.ClientID = 0
 			return m
 

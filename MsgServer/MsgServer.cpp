@@ -15,7 +15,7 @@ using namespace std;
 
 int gMaxID = M_USER;
 map<int, shared_ptr<Session>> gSessions;
-std::chrono::system_clock::time_point minTime = std::chrono::system_clock::now();
+//std::chrono::system_clock::time_point minTime = std::chrono::system_clock::now();
 
 void Timeout()
 {
@@ -23,7 +23,7 @@ void Timeout()
     {
         for (map<int, shared_ptr<Session>>::iterator it = gSessions.begin(); it != gSessions.end();)
         {
-            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - it->second->lastActivityTime).count() > 10000)
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - it->second->lastActivityTime).count() > 5000)
             {
                 cout << "User " << it->first<< " left" << endl;
                 it = gSessions.erase(it);
@@ -53,12 +53,13 @@ void ProcessClient(SOCKET hSock)
             auto pSession = make_shared<Session>(++gMaxID, m.m_Data);
             pSession->lastActivityTime = std::chrono::system_clock::now();
             gSessions[pSession->m_ID] = pSession;
+            cout << "User " << pSession->m_ID << " connected" << endl;
             Message::Send(s, pSession->m_ID, M_BROKER, M_INIT);
             break;
         }
         case M_EXIT:
         {
-            gSessions.find(m.m_Header.m_From)->second->lastActivityTime = minTime;
+            cout << "User " << m.m_Header.m_From << " asked to disconnect" << endl;
             Message::Send(s, m.m_Header.m_From, M_BROKER, M_CONFIRM);
             return;
         }

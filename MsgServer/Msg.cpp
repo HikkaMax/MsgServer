@@ -25,5 +25,11 @@ Message Message::Send(unsigned int To, unsigned int Type, const string& Data)
 	{
 		m_ClientID = m.m_Header.m_To;
 	}
+
+	if (m.m_Header.m_Type == M_CONFIRM)
+	{
+		m_ClientID = 0;
+	}
+
 	return m;
 }

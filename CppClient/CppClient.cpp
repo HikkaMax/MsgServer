@@ -14,6 +14,10 @@ void ProcessMessages()
 {
     while (true)
     {
+
+        if (Message::m_ClientID == 0) {
+            break;
+        }
         Message m = Message::Send(M_BROKER, M_GETDATA);
         switch (m.m_Header.m_Type)
         {
@@ -21,12 +25,6 @@ void ProcessMessages()
         {
             cout << "\nMessage from: " << m.m_Header.m_From << endl;
             cout << m.m_Data << endl;
-            break;
-        }
-        case M_EXIT:
-        {
-            cout << "You've been disconnected due to inactivity";
-            Message::m_ClientID = 0;
             break;
         }
         case M_CONFIRM:
