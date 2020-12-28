@@ -1,0 +1,10 @@
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\bin\Debug\SharpClient.exe.config
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\bin\Debug\SharpClient.exe
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\bin\Debug\SharpClient.pdb
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\obj\Debug\SharpClient.csproj.CoreCompileInputs.cache
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\obj\Debug\SharpClient.exe
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\obj\Debug\SharpClient.pdb
+D:\Program Files (x86)\LR1\MsgServer\x64\SharpClient.exe.config
+D:\Program Files (x86)\LR1\MsgServer\x64\SharpClient.exe
+D:\Program Files (x86)\LR1\MsgServer\x64\SharpClient.pdb
+D:\Program Files (x86)\LR1\MsgServer\SharpClient\obj\Debug\SharpClient.csprojAssemblyReference.cache
