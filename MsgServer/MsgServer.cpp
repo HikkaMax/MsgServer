@@ -6,6 +6,7 @@
 #include "MsgServer.h"
 #include "Msg.h"
 #include "Session.h"
+#pragma warning(disable : 4996)
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,6 +15,7 @@
 using namespace std;
 
 int gMaxID = M_USER;
+int dbID = M_DATABASE;
 map<int, shared_ptr<Session>> gSessions;
 //std::chrono::system_clock::time_point minTime = std::chrono::system_clock::now();
 
@@ -23,7 +25,7 @@ void Timeout()
     {
         for (map<int, shared_ptr<Session>>::iterator it = gSessions.begin(); it != gSessions.end();)
         {
-            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - it->second->lastActivityTime).count() > 5000)
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - it->second->lastActivityTime).count() > 10000)
             {
                 cout << "User " << it->first<< " left" << endl;
                 it = gSessions.erase(it);
@@ -48,6 +50,16 @@ void ProcessClient(SOCKET hSock)
         int nCode = m.Receive(s);
         switch (nCode)
         {
+        case M_DATABASE_CONNECTION:
+        {
+            /*У БД есть заранее забитый ID, используем его*/
+            auto pSession = make_shared<Session>(dbID, m.m_Data);
+            pSession->lastActivityTime = std::chrono::system_clock::now();
+            gSessions[pSession->m_ID] = pSession;
+            cout << "Database with id " << pSession->m_ID << " connected" << endl;
+            Message::Send(s, pSession->m_ID, M_BROKER, M_DATABASE_CONNECTION);
+            break;
+        }
         case M_INIT:
         {
             auto pSession = make_shared<Session>(++gMaxID, m.m_Data);
@@ -72,10 +84,15 @@ void ProcessClient(SOCKET hSock)
             }
             break;
         }
+        case M_HISTORY:
+        {
+            gSessions.find(m.m_Header.m_From)->second->lastActivityTime = std::chrono::system_clock::now();
+            gSessions[dbID]->Send(s);
+        }
         default:
         {
             gSessions.find(m.m_Header.m_From)->second->lastActivityTime = std::chrono::system_clock::now();
-            if (gSessions.find(m.m_Header.m_From) != gSessions.end())
+            if (gSessions.find(m.m_Header.m_From) != gSessions.end() || m.m_Header.m_From != dbID)
             {
                 if (gSessions.find(m.m_Header.m_To) != gSessions.end())
                 {
@@ -85,12 +102,23 @@ void ProcessClient(SOCKET hSock)
                 {
                     for (auto& gSession : gSessions)
                     {
-                        if (gSession.first != m.m_Header.m_From)
+                        if (gSession.first != m.m_Header.m_From && gSession.first != dbID)
                         {
                             gSession.second->Add(m);
                         }
                             
                     }
+                }
+
+                /*
+                auto timenow =chrono::system_clock::to_time_t(chrono::system_clock::now());
+                string currentTime = ctime(&timenow);
+                m.m_Data = "[" + currentTime + "]: " + m.m_Data;
+                */
+
+                /*Каждое сообщение, проходящее через брокер, отправляется в БД в порядке очереди*/
+                if (m.m_Header.m_From != dbID && m.m_Header.m_To != dbID) {
+                    gSessions[dbID]->Add(m);
                 }
             }
             break;

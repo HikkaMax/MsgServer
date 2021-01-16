@@ -8,11 +8,8 @@ M_GETDATA	= 2
 M_NODATA	= 3
 M_DATA		= 4
 M_CONFIRM	= 5
-M_DATABASE_CONNECTION = 6
-M_HISTORY = 7
 
 M_BROKER	= 0
-M_DATABASE = 1
 M_ALL		= 10
 M_USER		= 100
 
@@ -61,7 +58,5 @@ class Message:
 			m.Receive(s)
 			if m.Header.Type == M_INIT:
 				Message.ClientID = m.Header.To
-			if m.Header.Type == M_CONFIRM:
-				Message.ClientID = 0
 			return m
 

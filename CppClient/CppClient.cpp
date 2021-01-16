@@ -44,7 +44,7 @@ void ProcessMessages()
 void Menu()
 {
     cout << "Write action:" << endl;
-    cout << "\n1.Connect to Server \n2.Send global message(only if connected) \n3.Send message to certain user(only if connected) \n0. Exit program " << endl;
+    cout << "\n1.Connect to Server \n2.Send global message(only if connected) \n3.Send message to certain user(only if connected) \n4. Get message history\n0. Exit program " << endl;
     int actionId;
     cin >> actionId;
     switch (actionId)
@@ -86,6 +86,15 @@ void Menu()
         string s;
         getline(cin, s, '\n');
         Message::Send(recieverId, M_DATA, s);
+        break;
+    }
+    case 4:
+    {
+        if (!Message::m_ClientID) {
+            cout << "Please, connect to server" << endl;
+            break;
+        }
+        Message::Send(M_BROKER, M_HISTORY);
         break;
     }
     case 0:

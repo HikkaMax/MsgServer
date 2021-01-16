@@ -21,13 +21,13 @@ Message Message::Send(unsigned int To, unsigned int Type, const string& Data)
 	Message m(To, m_ClientID, Type, Data);
 	m.Send(s);
 	m.Receive(s);
-	if (m.m_Header.m_Type == M_INIT)
+
+	if (m.m_Header.m_Type == M_INIT ||  m.m_Header.m_Type == M_DATABASE_CONNECTION)
 	{
 		m_ClientID = m.m_Header.m_To;
 	}
 
-	if (m.m_Header.m_Type == M_CONFIRM)
-	{
+	if (m.m_Header.m_Type == M_CONFIRM) {
 		m_ClientID = 0;
 	}
 

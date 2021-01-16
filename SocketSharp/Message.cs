@@ -15,12 +15,15 @@ namespace SocketSharp
 		M_GETDATA,
 		M_NODATA,
 		M_DATA,
-		M_CONFIRM
+		M_CONFIRM,
+		M_DATABASE_CONNECTION,
+		M_HISTORY
 	};
 
 	public enum Members: uint
 	{
 		M_BROKER = 0,
+		M_DATABASE = 1,
 		M_ALL = 10,
 		M_USER = 100
 	};

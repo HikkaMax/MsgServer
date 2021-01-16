@@ -72,7 +72,7 @@ namespace SocketSharp
             {
                 Thread t = new Thread(Program.ProcessMessage); ;
                 Console.WriteLine("Write action:");
-                Console.WriteLine("\n1.Connect to Server \n2.Send global message(only if connected) \n3.Send message to certain user(only if connected) \n0. Exit program ");
+                Console.WriteLine("\n1.Connect to Server \n2.Send global message(only if connected) \n3.Send message to certain user(only if connected) \n4.Get message history\n0. Exit program ");
                 int action = Convert.ToInt32(Console.ReadLine());
                 switch (action)
                 {
@@ -102,6 +102,18 @@ namespace SocketSharp
                                 Console.WriteLine("Write user's ID");
                                 uint userId = Convert.ToUInt32(Console.ReadLine());
                                 SendMessage(userId, Convert.ToUInt32(Messages.M_DATA), Console.ReadLine());
+                            }
+                            else
+                            {
+                                Console.WriteLine("Please, connect to server");
+                            }
+                            break;
+                        }
+                    case 4:
+                        {
+                            if (m_ClientId != 0)
+                            {
+                                SendMessage(Convert.ToUInt32(Members.M_BROKER), Convert.ToUInt32(Messages.M_HISTORY), Console.ReadLine());
                             }
                             else
                             {

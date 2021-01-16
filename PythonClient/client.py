@@ -20,7 +20,7 @@ def Client():
 	t.start()
 
 while True:
-	print("\n1.Connect to Server \n2.Send global message(only if connected) \n3.Send message to certain user(only if connected) \n0. Exit program ")
+	print("\n1.Connect to Server \n2.Send global message(only if connected) \n3.Send message to certain user(only if connected) \n4.Get history.\n0. Exit program ")
 	actionId = int(input())
 	if (actionId == 1):
 		Client()
@@ -39,6 +39,11 @@ while True:
 		recieverId = int(input())
 		print("Write message")
 		Message.SendMessage(recieverId, M_DATA, input())
+	elif (actionId == 4):
+		if (Message.ClientID == 0):
+			print("Please, connect to server")
+			continue
+		Message.SendMessage(M_BROKER, M_DATA, input())
 	elif (actionId == 0):
 		if (Message.ClientID != 0):
 			Message.SendMessage(M_BROKER, M_EXIT)
