@@ -135,8 +135,8 @@ void Server()
     CSocket Server;
     Server.Create(12345);
 
-    thread t(Timeout);
-    t.detach();
+    //thread t(Timeout);
+    //t.detach();
 
     while (true)
     {

@@ -43,7 +43,7 @@ while True:
 		if (Message.ClientID == 0):
 			print("Please, connect to server")
 			continue
-		Message.SendMessage(M_BROKER, M_DATA, input())
+		Message.SendMessage(M_BROKER, M_HISTORY)
 	elif (actionId == 0):
 		if (Message.ClientID != 0):
 			Message.SendMessage(M_BROKER, M_EXIT)
