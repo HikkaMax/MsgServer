@@ -29,7 +29,10 @@ class Messenger:
             m = Message.SendMessage(M_BROKER, M_GETDATA)
             if m.Header.Type == M_DATA:
                 print("Content-type: application-json; charset=utf-8\n\n")
-                r = {'msg': m.Data}
+                r = {
+                    'msg': m.Data,
+                    'ClientID': m.Header.From
+                }
                 print(json.dumps(r))
         else:
             self.ResultText = "You are not authorized."
